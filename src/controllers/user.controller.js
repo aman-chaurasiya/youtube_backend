@@ -27,7 +27,7 @@ const generateAccessAndRefreshToken = async (userId) => {
   }
 };
 const registerUser = asyncHandler(async (req, resp) => {
-  // get user details from frontend
+  //TODO: get user details from frontend
   //validation - not empty
   //check if user is already exist - user name and email
   //check for images check for avatar
@@ -183,7 +183,8 @@ const logOutUser = asyncHandler(async (req, resp) => {
 });
 
 const refreshAccessToken = asyncHandler(async (req, resp) => {
-  const incomingRefreshToken = req.cookie.refreshToken || req.body.refreshToken;
+  const incomingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
   if (!incomingRefreshToken) {
     throw new ApiError(401, "UnAuthorized request");
   }
