@@ -336,6 +336,82 @@ const UpdateUserCoverImage = asyncHandler(async (req, resp) => {
     .json(new ApiResponse(200, user, "coverImage update successful"));
 });
 
+const getUserChannelProfile = asyncHandler(async (req, resp) => {
+  console.log(req.query);
+  const { username } = req.query;
+
+  if (!username?.trim()) {
+    throw new ApiError(400, "Username is missing");
+  }
+
+  const chennal = await User.aggregate([
+    {
+      $match: {
+        username: username?.toLowerCase(),
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "channel",
+        as: "subscribers",
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber",
+        as: "subscribedTo",
+      },
+    },
+    {
+      $addFields: {
+        subscribersCount: { $size: "$subscribers" },
+        chennalsSunscribedTo: { $size: "$subscribedTo" },
+        isSubscribed: {
+          $cond: {
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        fullname: 1,
+        username: 1,
+        subscribersCount: 1,
+        chennalsSunscribedTo: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1,
+        email: 1,
+      },
+    },
+  ]);
+
+  if (!chennal?.length) {
+    throw new ApiError(400, "chennal does not exists");
+  }
+
+  console.log(chennal);
+  return resp
+    .status(200)
+    .json(
+      new ApiResponse(200, chennal[0], "user chennal fetched successfully!!")
+    );
+});
+
+const getParams = asyncHandler(async (req, resp) => {
+  const { username } = req.query;
+  console.log(req.query);
+
+  return resp.status(200).json(new ApiResponse(200, username, "done"));
+});
+
 export {
   registerUser,
   loginUser,
@@ -346,4 +422,6 @@ export {
   updateAccountDetails,
   UpdateUserAvatar,
   UpdateUserCoverImage,
+  getUserChannelProfile,
+  getParams,
 };

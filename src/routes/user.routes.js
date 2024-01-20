@@ -4,6 +4,8 @@ import {
   loginUser,
   refreshAccessToken,
   registerUser,
+  getUserChannelProfile,
+  getParams,
 } from "../controllers/user.controller.js";
 import { upload } from "./../middlewares/multer.middlewere.js";
 import { verifyJWT } from "../middlewares/auth.middlewere.js";
@@ -29,5 +31,7 @@ router.route("/login").post(loginUser);
 
 router.route("/logout").post(verifyJWT, logOutUser);
 router.route("/refresh-token").post(refreshAccessToken);
+
+router.route("/Profile").post(getUserChannelProfile);
 
 export default router;
