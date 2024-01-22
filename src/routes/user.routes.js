@@ -5,7 +5,6 @@ import {
   refreshAccessToken,
   registerUser,
   getUserChannelProfile,
-  getParams,
 } from "../controllers/user.controller.js";
 import { upload } from "./../middlewares/multer.middlewere.js";
 import { verifyJWT } from "../middlewares/auth.middlewere.js";
