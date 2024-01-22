@@ -339,7 +339,7 @@ const UpdateUserCoverImage = asyncHandler(async (req, resp) => {
 
 const getUserChannelProfile = asyncHandler(async (req, resp) => {
   console.log(req.query);
-  const { username } = req.query;
+  const { username } = req.params;
 
   if (!username?.trim()) {
     throw new ApiError(400, "Username is missing");
@@ -456,6 +456,15 @@ const getWatchHistory = asyncHandler(async (req, resp) => {
     );
 });
 
+// const getusernameParams = asyncHandler(async (req, resp) => {
+//   console.log("testing");
+//   const { username } = req.params;
+//   console.log(username);
+//   return resp
+//     .status(200)
+//     .json(new ApiResponse(200, username, "success params"));
+// });
+
 export {
   registerUser,
   loginUser,
@@ -468,4 +477,5 @@ export {
   UpdateUserCoverImage,
   getUserChannelProfile,
   getWatchHistory,
+  // getusernameParams,
 };
