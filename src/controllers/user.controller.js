@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteOnCloudniary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -294,6 +294,10 @@ const UpdateUserAvatar = asyncHandler(async (req, resp) => {
   if (!avatar.url) {
     throw new ApiError(400, "Error on uplaoding avatar");
   }
+  const imageurl = req.user.avatar;
+  const result = await deleteOnCloudniary(imageurl);
+
+  console.log(result);
 
   const user = await User.findByIdAndUpdate(
     req.user?._id,
@@ -322,6 +326,10 @@ const UpdateUserCoverImage = asyncHandler(async (req, resp) => {
     throw new ApiError(400, "Error on uplaoding CoverImage");
   }
 
+  const imageurl = req.user.coverImage;
+  const result = await deleteOnCloudniary(imageurl);
+
+  console.log(result);
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
@@ -456,14 +464,14 @@ const getWatchHistory = asyncHandler(async (req, resp) => {
     );
 });
 
-// const getusernameParams = asyncHandler(async (req, resp) => {
-//   console.log("testing");
-//   const { username } = req.params;
-//   console.log(username);
-//   return resp
-//     .status(200)
-//     .json(new ApiResponse(200, username, "success params"));
-// });
+const deleteimageFromCloudinary = asyncHandler(async (req, resp) => {
+  const user = req.user.avatar;
+  const result = await deleteOnCloudniary(user);
+
+  return resp
+    .status(200)
+    .json(new ApiResponse(200, result, "fetch successfully"));
+});
 
 export {
   registerUser,
@@ -477,5 +485,5 @@ export {
   UpdateUserCoverImage,
   getUserChannelProfile,
   getWatchHistory,
-  // getusernameParams,
+  deleteimageFromCloudinary,
 };

@@ -11,6 +11,7 @@ import {
   UpdateUserAvatar,
   UpdateUserCoverImage,
   getWatchHistory,
+  deleteimageFromCloudinary,
   // getusernameParams,
 } from "../controllers/user.controller.js";
 import { upload } from "./../middlewares/multer.middlewere.js";
@@ -56,5 +57,5 @@ router.route("/c/:username").get(verifyJWT, getUserChannelProfile);
 
 router.route("/history").get(verifyJWT, getWatchHistory);
 
-// router.route("/:username").get(getusernameParams);
+router.route("/delete").post(verifyJWT, deleteimageFromCloudinary);
 export default router;

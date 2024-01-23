@@ -23,4 +23,25 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   }
 };
-export { uploadOnCloudinary };
+
+const deleteOnCloudniary = async (fileUrl) => {
+  try {
+    if (!fileUrl) {
+      return "!file url";
+    }
+    const imageArray = fileUrl.split("/");
+
+    const imageName = imageArray[imageArray.length - 1].split(".")[0];
+
+    const result = await cloudinary.uploader.destroy(
+      imageName,
+      (error, result) => {
+        console.log(error);
+      }
+    );
+    return result;
+  } catch (error) {
+    return "error occured";
+  }
+};
+export { uploadOnCloudinary, deleteOnCloudniary };
