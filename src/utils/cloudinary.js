@@ -7,11 +7,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath, cloudinaryPath) => {
   try {
     if (!localFilePath) return null;
     //upload the file on cloudnary
     const response = await cloudinary.uploader.upload(localFilePath, {
+      folder: "youtube backend/" + cloudinaryPath,
       resource_type: "auto",
     });
     // file has been successfully uplaoaded
