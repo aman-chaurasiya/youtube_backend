@@ -70,6 +70,7 @@ const registerUser = asyncHandler(async (req, resp) => {
     throw new ApiError(400, "Avatar file is required");
   }
 
+  // just for branch testing an setup
   const avatar = await uploadOnCloudinary(avatarLocalPath, "Avatars");
   const coverImage = await uploadOnCloudinary(
     coverImageLocalPath,
